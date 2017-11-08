@@ -12,6 +12,8 @@ import Votes as votes
 
 import QuestionAnswer as QA
 
+import datetime
+
 
 class HelperClass:
 
@@ -152,3 +154,124 @@ class HelperClass:
                 pass
         self.QuestionAnswerPairs = allPairs
         return self.QuestionAnswerPairs
+
+
+    def SortByPostCreationTime(self, allPosts):
+
+        postDict = {}
+        for post in allPosts:
+            date = post.CreationDate
+            d = datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%f")
+            postDict[d] = post
+            a = 20
+
+        sortedPostsKeys = sorted(postDict.keys())
+
+        return [postDict, sortedPostsKeys]
+
+        pass
+
+
+    def AssignQuestionersReputation(self):
+
+        userList = self.documentDict[self.USERS]
+
+        for postKey in self.QuestionAnswerPairs.keys():
+            userId = self.QuestionAnswerPairs[postKey].OwnerUserId
+            for index, user in enumerate(userList):
+                if user.Id == userId:
+                    self.QuestionAnswerPairs[postKey].F1_QuestionersReputation = userList[index].Reputation
+        pass
+
+
+    def FindNumAnswerAndTheirScoresInOneHour(self):
+
+        for postKey in self.QuestionAnswerPairs.keys():
+            questionAnswerPair = self.QuestionAnswerPairs[postKey]
+            timeQuestion = questionAnswerPair.CreationDate
+            answerList = questionAnswerPair.AnswersList
+            questionCreationTime = datetime.datetime.strptime(timeQuestion, "%Y-%m-%dT%H:%M:%S.%f")
+
+            numAnswerCount = 0
+            sumScores = 0
+            answerInOneHourList = []
+            for answer in answerList:
+
+                #Answer in 1 Hour and Score
+                answerCreationTime = datetime.datetime.strptime(answer.CreationDate, "%Y-%m-%dT%H:%M:%S.%f")
+                diff_in_minutes = (answerCreationTime - questionCreationTime).total_seconds() / 60.0
+                if diff_in_minutes <= 60:
+                    answerInOneHourList.append(answer)
+                    numAnswerCount += 1
+                    sumScores += int(answer.Score)
+
+            self.QuestionAnswerPairs[postKey].F3_NumAnswerToQuestionInOneHour = numAnswerCount
+            self.QuestionAnswerPairs[postKey].F4_SumScores = sumScores
+
+
+            #Getting the best scored answer for each post
+            bestScoredAnswer = None
+            try:
+                sorted(answerInOneHourList, key=lambda a: int(a.Score), reverse=True)
+                bestScoredAnswer = answerInOneHourList[0]
+            except:
+                print("No Answer within 1 hour")
+
+            if bestScoredAnswer is not None:
+                self.QuestionAnswerPairs[postKey].F5_BestScoreAnswerLength = bestScoredAnswer.Body.__len__()
+                self.QuestionAnswerPairs[postKey].F6_BestScoreNumComments = bestScoredAnswer.CommentCount
+
+                answerCTime = datetime.datetime.strptime(bestScoredAnswer.CreationDate, "%Y-%m-%dT%H:%M:%S.%f")
+                self.QuestionAnswerPairs[postKey].F7_BestScoreTimeDiff = (answerCTime - questionCreationTime).total_seconds() / 60.0
+
+
+
+        x = 20
+
+
+        pass
+
+    def ExtractAllFeatures(self):
+
+        #1. Need to sort the posts dict in ascending order of timestamp, then view the posts.
+        allPosts = self.documentDict[self.POSTS]
+        postDict, sortedKeys = self.SortByPostCreationTime(allPosts)
+
+
+        #2. Questioners Reputation
+        self.AssignQuestionersReputation()
+
+        #3. Questions asked by questionaire
+
+        userDict = {}   #this will store userID and questions asked by the user
+        userList = self.documentDict[self.USERS]
+        for postKey in sortedKeys: #posts sorted by creation time
+            if postDict[postKey].PostTypeId == '1': # If id is 1, it is a question
+                #search the user who has asked the question
+                userID = postDict[postKey].OwnerUserId
+
+                #for this userID enter a new user in dictionary or update the 'question asked until this post' in the existing entry
+                try: #try updating
+                    userDict[userID].questionAsked += 1
+                except:
+                    #create new pbject of User class
+                    newUser = QA.User(userID)
+                    newUser.questionAsked = 0
+                    userDict[userID] = newUser    #initialize the number of questions asked by the user previous to asking this question
+
+                #we know the post ID of this question. We can append this feature value in the self.QuestionAnswerPairs dict
+                currentPostId = postDict[postKey].Id
+
+                #To the current Post ID add the feature - question asked by the questionaire before asking the current question
+                self.QuestionAnswerPairs[currentPostId].F2_QuesAskedByQuestionaire = userDict[userID].questionAsked
+                #self.QuestionAnswerPairs[currentPostId].Owner = userList[userID] #add the original users object
+        a=9
+
+
+        #4. Num Answers to Questions within one hour and Sum of their Scores
+        self.FindNumAnswerAndTheirScoresInOneHour()
+
+
+        #8.
+
+        pass

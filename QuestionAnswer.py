@@ -15,6 +15,16 @@ class Question:
         #Newly Created Attributes
         self.AnswersList = []
         self.Owner = None
+
+        self.F1_QuestionersReputation = None
+        self.F2_QuesAskedByQuestionaire = None
+        self.F3_NumAnswerToQuestionInOneHour = None
+        self.F4_SumScores = None
+        self.F5_BestScoreAnswerLength = None
+        self.F6_BestScoreNumComments = None
+        self.F7_BestScoreTimeDiff = None
+
+
         pass
 
 
@@ -70,6 +80,8 @@ class Answer:
         self.TimeDifference = None
 
 
+
+
         pass
 
     def InitializeAnswer(self, post):
@@ -83,6 +95,16 @@ class Answer:
         self.TimeDifference = None
 
 
+
+
         pass
 
+
+
+class User:
+    def __init__(self, userId):
+        self.UserId = userId
+        self.questionAsked = None
+        self.answerGiven = None
+        pass
 
