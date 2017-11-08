@@ -3,7 +3,7 @@ class Posts:
 
     def __init__(self):
         self.Id = None
-        self.PostId = None
+        self.PostTypeId = None
         self.AcceptedAnswerId = None
         self.CreationDate = None
         self.Score = None
