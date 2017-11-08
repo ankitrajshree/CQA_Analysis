@@ -21,6 +21,12 @@ def main():
             print("Error Parsing File")
 
 
+    #Step 2. Create Question Answer Pairs
+    questionAnswerPairs = helperObj.CreateQuestionAnswerPair()
+
+
+
+
 if __name__ == "__main__":
     #Call main function
     main()
