@@ -21,11 +21,15 @@ def main():
             print("Error Parsing File")
 
 
+    helperObj.PairCommentWithPosts()
+
+
     #Step 2. Create Question Answer Pairs
     questionAnswerPairs = helperObj.CreateQuestionAnswerPair()
 
     # Step 3. We have created Q/A pairs. Now we need to extract the features.
     helperObj.ExtractAllFeatures()
+    helperObj.CreateLabels()
 
     c = 20
 

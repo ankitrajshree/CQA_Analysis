@@ -13,6 +13,7 @@ import Votes as votes
 import QuestionAnswer as QA
 
 import datetime
+import operator
 
 
 class HelperClass:
@@ -104,6 +105,21 @@ class HelperClass:
                     pass
                 else:
                     raise "Error"
+
+
+
+    def PairCommentWithPosts(self):
+        comments = self.documentDict[self.COMMENTS]
+        for cmt in comments:
+            postId = cmt.PostId
+            for post in self.documentDict[self.POSTS]:
+                if post.Id == postId:
+                    try:
+                        post.CommentsList.append(cmt)
+                    except:
+                        post.CommentsList = [cmt]
+
+        pass
 
 
     def PairAnswerWithQuestion(self, allPairs, ans):
@@ -231,6 +247,77 @@ class HelperClass:
 
         pass
 
+
+    def NumCommentsInQAOfHighRepUser(self):
+
+        for postKey in self.QuestionAnswerPairs.keys():
+            questionAnswerPair = self.QuestionAnswerPairs[postKey]
+            timeQuestion = questionAnswerPair.CreationDate
+            answerList = questionAnswerPair.AnswersList
+            questionCreationTime = datetime.datetime.strptime(timeQuestion, "%Y-%m-%dT%H:%M:%S.%f")
+
+            numAnswerCount = 0
+            answerInOneHourList = []
+            for answer in answerList:
+
+                #Answer in 1 Hour
+                answerCreationTime = datetime.datetime.strptime(answer.CreationDate, "%Y-%m-%dT%H:%M:%S.%f")
+                diff_in_minutes = (answerCreationTime - questionCreationTime).total_seconds() / 60.0
+                if diff_in_minutes <= 60:
+                    answerInOneHourList.append(answer)
+                    numAnswerCount += 1
+
+            #Find the reputation of each user in answerInOneHourList and get the highest
+            userIdLists = []
+            for ans in answerInOneHourList:
+                userIdLists.append(ans.OwnerUserId)
+
+
+            reputationDict = {}
+            for userId in userIdLists:
+                for user in self.documentDict[self.USERS]:
+                    if userId == user.Id:
+                        reputationDict[userId] = int(user.Reputation)
+                        break
+
+            reputedUserId, reputationScore = [None,None]
+            try:
+                reputedUserId, reputationScore = sorted(reputationDict.items(), key=operator.itemgetter(1), reverse=True)[0]
+            except:
+                print("Object may be None")
+
+            #reputedUserId, reputationScore =  max([(userId, user.Reputation)  for user in self.documentDict[self.USERS] if userId == user.Id] , key=operator.itemgetter(1))
+
+            questionCreationTimePlusOne = questionCreationTime + datetime.timedelta(hours=1)
+            numComments = self.NumberofComments(reputedUserId, questionCreationTime)
+            self.QuestionAnswerPairs[postKey].F8_ReputedUserNumComments = numComments
+
+            c = 40
+
+
+        pass
+
+    def NumberofComments(self, userId, time):
+        posts_before_onehr = []
+        allPosts = self.documentDict[self.POSTS]
+        postDict, sortedKeys = self.SortByPostCreationTime(allPosts)
+
+        numComments = 0
+        for postKey in sortedKeys: #posts sorted by creation time
+            postCreationTime = datetime.datetime.strptime(postDict[postKey].CreationDate, "%Y-%m-%dT%H:%M:%S.%f")
+
+            if postDict[postKey].CommentsList is not None:
+                if postCreationTime <= time:
+                    for comment in postDict[postKey].CommentsList:
+                        commentCreationTime = datetime.datetime.strptime(comment.CreationDate,"%Y-%m-%dT%H:%M:%S.%f")
+                        if commentCreationTime <time:
+                            numComments += 1
+            else:
+                pass
+        return numComments
+        pass
+
+
     def ExtractAllFeatures(self):
 
         #1. Need to sort the posts dict in ascending order of timestamp, then view the posts.
@@ -272,6 +359,22 @@ class HelperClass:
         self.FindNumAnswerAndTheirScoresInOneHour()
 
 
-        #8.
+        #8. NumComments in Q/A of highest reputation user of the answer of current post
+        self.NumCommentsInQAOfHighRepUser()
+
+        pass
+
+
+    def CreateLabels(self):
+        quesAnsPair = self.QuestionAnswerPairs
+        ViewCountList = [int(value.ViewCount)  for key,value in quesAnsPair.items()]
+        import statistics
+        medianViewCountList = statistics.median(ViewCountList)
+
+        for key, value in quesAnsPair.items():
+            if int(quesAnsPair[key].ViewCount) <= medianViewCountList:
+                quesAnsPair[key].Y_Label_FrequentlyViewed = 0
+            else:
+                quesAnsPair[key].Y_Label_FrequentlyViewed = 1
 
         pass

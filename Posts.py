@@ -19,7 +19,7 @@ class Posts:
         self.CommentCount = None
 
         #Additional Attributes. To be added
-
+        self.CommentsList = None
 
 
     def parse(self, node):

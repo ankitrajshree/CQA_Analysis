@@ -14,6 +14,7 @@ class Question:
 
         #Newly Created Attributes
         self.AnswersList = []
+        self.CommentsList = []
         self.Owner = None
 
         self.F1_QuestionersReputation = None
@@ -23,6 +24,9 @@ class Question:
         self.F5_BestScoreAnswerLength = None
         self.F6_BestScoreNumComments = None
         self.F7_BestScoreTimeDiff = None
+        self.F8_ReputedUserNumComments = None
+
+        self.Y_Label_FrequentlyViewed = None
 
 
         pass
@@ -35,7 +39,7 @@ class Question:
         self.AnswerCount = post.AnswerCount
         self.CommentCount = post.CommentCount
         self.Score = post.Score
-        
+        self.CommentsList = post.CommentsList
 
 
 
@@ -78,6 +82,7 @@ class Answer:
         self.CommentCount = None
         self.Body = None
         self.TimeDifference = None
+        self.CommentsList = None
 
 
 
@@ -93,6 +98,7 @@ class Answer:
         self.CommentCount = post.CommentCount
         self.Body = post.Body
         self.TimeDifference = None
+        self.CommentsList = post.CommentsList
 
 
 
