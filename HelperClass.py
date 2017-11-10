@@ -41,9 +41,12 @@ class HelperClass:
     def getHCAttribute(self, name):
         return getattr(self,name)
 
+    def setHCAttribute(self, name, value):
+        setattr(self, name, value)
+
     def ParseFile(self, filename, className):
 
-        f = open(filename,'r')
+        f = open(filename,'r', encoding='utf8')
         doc = f.read()
         f.close()
 
