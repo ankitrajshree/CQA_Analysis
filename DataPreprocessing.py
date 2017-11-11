@@ -3,6 +3,8 @@ import Files
 
 import HelperClass as HC
 
+import Csvgenerator
+
 """
 Main Function
 """
@@ -30,6 +32,11 @@ def main():
     # Step 3. We have created Q/A pairs. Now we need to extract the features.
     helperObj.ExtractAllFeatures()
     helperObj.CreateLabels()
+
+    # Step 4: Create csv files
+    csvGenerator = Csvgenerator.CsvGenerator(questionAnswerPairs)
+    csvGenerator.generate_standardized_data()
+    csvGenerator.genrate_csv()
 
     c = 20
 

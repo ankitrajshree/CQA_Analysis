@@ -6,4 +6,4 @@ def main():
         print ("k value:"+str(k) +" accuracy: "+str(l.kfold_validator()))
 
 if __name__ =='__main__':
-    main()  
+    main()

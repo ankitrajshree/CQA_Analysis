@@ -234,7 +234,13 @@ class HelperClass:
                 print("No Answer within 1 hour")
 
             if bestScoredAnswer is not None:
-                self.QuestionAnswerPairs[postKey].F5_BestScoreAnswerLength = bestScoredAnswer.Body.__len__()
+                bodyStr = bestScoredAnswer.Body
+                import re
+                pattern = re.compile('<.*?>')
+                tagStrippedBodyStr = re.sub(pattern, '', bodyStr)
+
+                self.QuestionAnswerPairs[postKey].F5_BestScoreAnswerLength = tagStrippedBodyStr.__len__()
+                #self.QuestionAnswerPairs[postKey].F5_BestScoreAnswerLength = bestScoredAnswer.Body.__len__()
                 self.QuestionAnswerPairs[postKey].F6_BestScoreNumComments = bestScoredAnswer.CommentCount
 
                 answerCTime = datetime.datetime.strptime(bestScoredAnswer.CreationDate, "%Y-%m-%dT%H:%M:%S.%f")

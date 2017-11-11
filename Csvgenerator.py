@@ -5,29 +5,12 @@ import numpy as np
 from sklearn import  preprocessing
 
 class CsvGenerator(object):
-    def __init__(self):
-        self.helperObj = HC.HelperClass()
-
-    def getQuestion_pair(self):
-        for file in Files.InputFiles.keys():
-            try:
-                self.helperObj.ParseFile(Files.InputFiles[file], file)
-
-            except:
-                print("Error Parsing File")
-
-        self.helperObj.PairCommentWithPosts()
-
-        # Step 2. Create Question Answer Pairs
-        questionAnswerPairs = self.helperObj.CreateQuestionAnswerPair()
-
-        # Step 3. We have created Q/A pairs. Now we need to extract the features.
-        self.helperObj.ExtractAllFeatures()
-        self.helperObj.CreateLabels()
-        return questionAnswerPairs
+    def __init__(self, questionAnswerPairs):
+        #self.helperObj = HC.HelperClass()
+        self.questionAnswerPairs = questionAnswerPairs
 
     def genrate_csv(self):
-        QA_Pairs = self.getQuestion_pair()
+        QA_Pairs = self.questionAnswerPairs
         X_matrix = np.empty(shape=(0, 8))
         Y_matrix = np.empty(shape=(0, 1))
         for key, QA_Pair in QA_Pairs.items():
@@ -45,8 +28,8 @@ class CsvGenerator(object):
         np.savetxt('data.csv', X_matrix, delimiter=',',fmt='%i')
         np.savetxt('label.csv', Y_matrix, delimiter=',',fmt='%i')
 
-    def generate_normalized_csv(self):
-        QA_Pairs = self.getQuestion_pair()
+    def generate_standardized_data(self):
+        QA_Pairs = self.questionAnswerPairs
         X_matrix = np.empty(shape=(0, 8))
         Y_matrix = np.empty(shape=(0,1))
         for key, QA_Pair in QA_Pairs.items():
@@ -67,7 +50,3 @@ class CsvGenerator(object):
 
         pass
 
-if __name__ =='__main__':
-    csvgen = CsvGenerator()
-    csvgen.generate_normalized_csv()
-    csvgen.genrate_csv()
