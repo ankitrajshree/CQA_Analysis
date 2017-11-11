@@ -30,11 +30,16 @@ def main():
     questionAnswerPairs = helperObj.CreateQuestionAnswerPair()
 
     # Step 3. We have created Q/A pairs. Now we need to extract the features.
-    helperObj.ExtractAllFeatures()
-    helperObj.CreateLabels()
+    hourList = [1,2,3,4,5,6,7,8,9,10,11,12]
+    hourFeaturePair = {}
+    for hour in hourList:
+        helperObj.CreateLabels()
+        featureList = helperObj.ExtractAllFeatures(hour)
+        hourFeaturePair[hour] = featureList
+
 
     # Step 4: Create csv files
-    csvGenerator = Csvgenerator.CsvGenerator(questionAnswerPairs)
+    csvGenerator = Csvgenerator.CsvGenerator(hourFeaturePair)
     csvGenerator.generate_standardized_data()
     csvGenerator.genrate_csv()
 

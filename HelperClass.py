@@ -12,6 +12,8 @@ import Votes as votes
 
 import QuestionAnswer as QA
 
+import Features
+
 import datetime
 import operator
 
@@ -188,7 +190,7 @@ class HelperClass:
         pass
 
 
-    def AssignQuestionersReputation(self):
+    def GetQuestionersReputation(self):
 
         userList = self.documentDict[self.USERS]
 
@@ -197,10 +199,12 @@ class HelperClass:
             for index, user in enumerate(userList):
                 if user.Id == userId:
                     self.QuestionAnswerPairs[postKey].F1_QuestionersReputation = userList[index].Reputation
+                    break
+
         pass
 
 
-    def FindNumAnswerAndTheirScoresInOneHour(self):
+    def FindNumAnswerAndTheirScoresInXHours(self, hours):
 
         for postKey in self.QuestionAnswerPairs.keys():
             questionAnswerPair = self.QuestionAnswerPairs[postKey]
@@ -216,13 +220,16 @@ class HelperClass:
                 #Answer in 1 Hour and Score
                 answerCreationTime = datetime.datetime.strptime(answer.CreationDate, "%Y-%m-%dT%H:%M:%S.%f")
                 diff_in_minutes = (answerCreationTime - questionCreationTime).total_seconds() / 60.0
-                if diff_in_minutes <= 60:
+                if diff_in_minutes <= (hours*60):
                     answerInOneHourList.append(answer)
                     numAnswerCount += 1
                     sumScores += int(answer.Score)
 
-            self.QuestionAnswerPairs[postKey].F3_NumAnswerToQuestionInOneHour = numAnswerCount
+            self.QuestionAnswerPairs[postKey].F3_NumAnswerToQuestionInXHours = numAnswerCount
+
             self.QuestionAnswerPairs[postKey].F4_SumScores = sumScores
+
+
 
 
             #Getting the best scored answer for each post
@@ -240,11 +247,13 @@ class HelperClass:
                 tagStrippedBodyStr = re.sub(pattern, '', bodyStr)
 
                 self.QuestionAnswerPairs[postKey].F5_BestScoreAnswerLength = tagStrippedBodyStr.__len__()
+
                 #self.QuestionAnswerPairs[postKey].F5_BestScoreAnswerLength = bestScoredAnswer.Body.__len__()
                 self.QuestionAnswerPairs[postKey].F6_BestScoreNumComments = bestScoredAnswer.CommentCount
 
                 answerCTime = datetime.datetime.strptime(bestScoredAnswer.CreationDate, "%Y-%m-%dT%H:%M:%S.%f")
                 self.QuestionAnswerPairs[postKey].F7_BestScoreTimeDiff = (answerCTime - questionCreationTime).total_seconds() / 60.0
+
 
 
 
@@ -254,7 +263,7 @@ class HelperClass:
         pass
 
 
-    def NumCommentsInQAOfHighRepUser(self):
+    def NumCommentsInQAOfHighRepUser(self, hours):
 
         for postKey in self.QuestionAnswerPairs.keys():
             questionAnswerPair = self.QuestionAnswerPairs[postKey]
@@ -269,7 +278,7 @@ class HelperClass:
                 #Answer in 1 Hour
                 answerCreationTime = datetime.datetime.strptime(answer.CreationDate, "%Y-%m-%dT%H:%M:%S.%f")
                 diff_in_minutes = (answerCreationTime - questionCreationTime).total_seconds() / 60.0
-                if diff_in_minutes <= 60:
+                if diff_in_minutes <= (hours*60):
                     answerInOneHourList.append(answer)
                     numAnswerCount += 1
 
@@ -294,8 +303,8 @@ class HelperClass:
 
             #reputedUserId, reputationScore =  max([(userId, user.Reputation)  for user in self.documentDict[self.USERS] if userId == user.Id] , key=operator.itemgetter(1))
 
-            questionCreationTimePlusOne = questionCreationTime + datetime.timedelta(hours=1)
-            numComments = self.NumberofComments(reputedUserId, questionCreationTime)
+            questionCreationTimePlusX = questionCreationTime + datetime.timedelta(hours=1)
+            numComments = self.NumberofComments(reputedUserId, questionCreationTimePlusX)
             self.QuestionAnswerPairs[postKey].F8_ReputedUserNumComments = numComments
 
             c = 40
@@ -312,7 +321,7 @@ class HelperClass:
         for postKey in sortedKeys: #posts sorted by creation time
             postCreationTime = datetime.datetime.strptime(postDict[postKey].CreationDate, "%Y-%m-%dT%H:%M:%S.%f")
 
-            if postDict[postKey].CommentsList is not None:
+            if postDict[postKey].OwnerUserId == userId and postDict[postKey].CommentsList is not None :
                 if postCreationTime <= time:
                     for comment in postDict[postKey].CommentsList:
                         commentCreationTime = datetime.datetime.strptime(comment.CreationDate,"%Y-%m-%dT%H:%M:%S.%f")
@@ -324,7 +333,10 @@ class HelperClass:
         pass
 
 
-    def ExtractAllFeatures(self):
+    def ExtractAllFeatures(self, hours):
+
+        #Create the Object of Feature Class
+        features = Features.Features()
 
         #1. Need to sort the posts dict in ascending order of timestamp, then view the posts.
         allPosts = self.documentDict[self.POSTS]
@@ -332,7 +344,7 @@ class HelperClass:
 
 
         #2. Questioners Reputation
-        self.AssignQuestionersReputation()
+        self.GetQuestionersReputation()
 
         #3. Questions asked by questionaire
 
@@ -362,11 +374,33 @@ class HelperClass:
 
 
         #4. Num Answers to Questions within one hour and Sum of their Scores
-        self.FindNumAnswerAndTheirScoresInOneHour()
+        self.FindNumAnswerAndTheirScoresInXHours(hours)
 
 
         #8. NumComments in Q/A of highest reputation user of the answer of current post
-        self.NumCommentsInQAOfHighRepUser()
+        self.NumCommentsInQAOfHighRepUser(hours)
+
+
+        for key, qaPairs in self.QuestionAnswerPairs.items():
+            feature = Features.Feature()
+
+            feature.F1_QuestionersReputation        =   qaPairs.F1_QuestionersReputation
+            feature.F2_QuesAskedByQuestionaire      =   qaPairs.F2_QuesAskedByQuestionaire
+            feature.F3_NumAnswerToQuestionInXHours  =   qaPairs.F3_NumAnswerToQuestionInXHours
+            feature.F4_SumScores                    =   qaPairs.F4_SumScores
+            feature.F5_BestScoreAnswerLength        =   qaPairs.F5_BestScoreAnswerLength
+            feature.F6_BestScoreNumComments         =   qaPairs.F6_BestScoreNumComments
+            feature.F7_BestScoreTimeDiff            =   qaPairs.F7_BestScoreTimeDiff
+            feature.F8_ReputedUserNumComments       =   qaPairs.F8_ReputedUserNumComments
+
+            feature.Y_Label_FrequentlyViewed        =   qaPairs.Y_Label_FrequentlyViewed
+
+
+
+            features.featureList.append(feature)
+
+
+        return features.featureList
 
         pass
 

@@ -19,7 +19,7 @@ class Question:
 
         self.F1_QuestionersReputation = None
         self.F2_QuesAskedByQuestionaire = None
-        self.F3_NumAnswerToQuestionInOneHour = None
+        self.F3_NumAnswerToQuestionInXHours = None
         self.F4_SumScores = None
         self.F5_BestScoreAnswerLength = None
         self.F6_BestScoreNumComments = None
