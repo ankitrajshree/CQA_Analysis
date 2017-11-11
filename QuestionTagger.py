@@ -6,6 +6,7 @@ from nltk.stem import WordNetLemmatizer
 import pandas as pd
 import numpy as np
 import Files
+import math
 
 class QuestionTagger:
 
@@ -16,16 +17,19 @@ class QuestionTagger:
         self.wordnet_lemmatizer = WordNetLemmatizer()
         self.coOccMatrix = None
         self.wordList = None
-        self.tagList = None;
-        self.tagsPrior = None;
+        self.tagsList = None
+        self.tagsPrior = None
         self.baseLevel = None
+        self.strengthAssociation = None
+        self.scaledEntropy = None
 
     def loadFiles(self):
         for file in Files.InputFiles.keys():
             try:
                 self.helperObj.ParseFile(Files.InputFiles[file], file)
-                self.helperObj.setHCAAttribute(file,self.helperObj.documentDict.get(file.lower()));
-            except:
+                self.helperObj.setHCAttribute(file,self.helperObj.documentDict.get(file.lower()));
+            except Exception as  inst :
+                print(inst)
                 print("Error Parsing File")
 
     #Strips the Html tags from the body of the post
@@ -34,53 +38,99 @@ class QuestionTagger:
         self.htmlstrip.feed(html)
         return self.htmlstrip.get_data()
 
-    #Tokenize and lemmatize the words
-    def getTokenLemma(self,sentence):
-        tokens = nltk.word_tokenize(sentence)
-        words = []
-        for token in tokens:
-            actWord = self.wordnet_lemmatizer.lemmatize(token)
-            words.append(actWord);
-        return words;
-
     #Creates the CoOccurance matrix between words of post and tags
-    '''def createCoOccurMat(self,):
-        #coOccurancematrix =
-        self.coOccMatrix = coOccurancematrix;
+    def createCoOccurMat(self,):
+        co_occurence_matrix = {key: {} for key in self.tagsList}
+        for post in self.helperObj.Posts:
+            if (post.Tags is None):
+                continue
+            if (post.PostTypeId == 2):
+                continue
+            tagsForPost = post.Tags.split("><")
+            tagsForPost[0] = tagsForPost[0].lstrip("<")
+            tagsForPost[-1] = tagsForPost[-1].rstrip(">")
+            body = self.stripHtmlTags(post.Body)
+            bodyTokens = nltk.word_tokenize(body)
+            for token in bodyTokens:
+                lem_token = self.wordnet_lemmatizer.lemmatize(token)
+                for question_tag in tagsForPost:
+                    present_value = (co_occurence_matrix.get(question_tag)).get(lem_token, 0)
+                    present_value = present_value + 1
+                    co_occurence_matrix[question_tag][lem_token] = present_value
+        co_occurence_df = pd.DataFrame(co_occurence_matrix)
+        co_occurence_df = co_occurence_df.fillna(0)
+        self.coOccMatrix = co_occurence_df;
 
-        pass'''
+        pass
+
+    #Strength Association of the words
+    def getStrengthAssoc(self):
+        coOccDf = self.coOccMatrix;
+        co_occurence_total = coOccDf.sum().sum()
+        rowTotals = coOccDf.sum(axis=1)
+        columnTotals = coOccDf.sum(axis=0)
+        sij = {key: {} for key in self.tagsList}
+        for word in coOccDf.index:
+            for tag in self.tagsList:
+                rowTotal = rowTotals[word]
+                columnTotal = columnTotals[tag]
+                tempvalue = (coOccDf.loc[word][tag] * co_occurence_total) / float(rowTotal * columnTotal)
+                if (tempvalue == 0):
+                    sij[tag][word] = 0
+                else:
+                    sij[tag][word] = math.log10(tempvalue)
+        sij_df = pd.DataFrame(sij)
+        sij_df = sij_df.fillna(0)
+        self.strengthAssociation = sij_df
+        pass
 
     #Base level of the Tag
     def getBaseLevel(self):
-        tagsprior = []
-        baseLevel = []
-        coOccMat = self.coOccMatrix;
-        N = 100
-        for i in range(self.coOccMatrix.shape[1]):
-            sum = coOccMat[i].sum()
-            prior = sum/float(N)
-            tagsprior.append(prior)
-            baseVal = np.log([prior/(1-prior)])
-            baseLevel.append(baseVal)
-        self.tagsPrior = pd.dataFrame(tagsprior)
-        self.baseLevel = pd.dataFrame(baseLevel)
+        tagFrequencies = [int(value.Count) for index, value in enumerate(self.helperObj.Tags)]
+        totalFrequency = sum(tagFrequencies)
+        tagPis = {}
+        bi = {}
+        for tag in self.helperObj.Tags:
+            prob = float(tag.Count) / float(totalFrequency)
+            tagbi = math.log10(prob / (1 - prob))
+            tagPis[tag.TagName] = prob
+            bi[tag.TagName] = tagbi
+        self.baseLevel = bi;
         pass
 
     #Entropy of the word
     def getEntropy(self):
-
-
+        entropy = {}
+        coOccDf = self.coOccMatrix;
+        rowTotals = coOccDf.sum(axis=1)
+        columnTotals = coOccDf.sum(axis=0)
+        for word in coOccDf.index:
+            totalEntropyForPost = 0
+            for tag in self.tagsList:
+                rowTotal = rowTotals[word]
+                nji = coOccDf.loc[word][tag]
+                if ((rowTotal > 0) and (nji > 0)):
+                    pIGivenJ = nji / float(rowTotal)
+                    totalEntropyForPost = totalEntropyForPost - pIGivenJ * math.log10(pIGivenJ)
+            entropy[word] = totalEntropyForPost
+        entropyMax = max(entropy.values())
+        scaledEntropy = {key: 1 - value / entropyMax for key, value in entropy.items()}
+        self.scaledEntropy = scaledEntropy
         pass
 
     #Method which processes all the model parameters
     def tagger(self):
-        self.loadFiles();
-        for post in self.helperObj.Posts:
-            body = post.Body
-            body = body.replace('\n','').replace('\r','')
-            proBody = self.stripHtmlTags(body)
-            words = self.getTokenLemma(proBody)
-            tags = post.Tags
+        self.loadFiles()
+        self.tagsList = [value.TagName for index, value in enumerate(self.helperObj.Tags)]
+        self.createCoOccurMat()
+        #print("Co ouccurrence",self.coOccMatrix)
+        self.getBaseLevel()
+        #print("Base level",self.baseLevel)
+        self.getEntropy()
+        #print("Scaled entropy",self.scaledEntropy)
+        self.getStrengthAssoc()
+        #print("Strength Association",self.strengthAssociation)
+
 
 if __name__ =='__main__':
     questagger = QuestionTagger()
