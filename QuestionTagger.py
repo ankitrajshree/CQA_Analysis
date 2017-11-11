@@ -1,3 +1,5 @@
+from sqlalchemy.sql.functions import coalesce
+
 import HelperClass as HC
 import MLStripper as mls
 import html.parser as ht
@@ -15,13 +17,21 @@ class QuestionTagger:
         self.helperObj = HC.HelperClass()
         self.htmlstrip = mls.MLStripper()
         self.wordnet_lemmatizer = WordNetLemmatizer()
-        self.coOccMatrix = None
+        self.coOccMatrixBody = None
+        self.coOccMatrixTitle = None
         self.wordList = None
         self.tagsList = None
         self.tagsPrior = None
         self.baseLevel = None
-        self.strengthAssociation = None
-        self.scaledEntropy = None
+        self.strengthAssoBody = None
+        self.strengthAssoTitle = None
+        self.scaledEntropyBody = None
+        self.scaledEntropyTitle = None
+        self.weightBody = 1.75
+        self.weightTitle = 0.93
+        self.attentionWeightBody = None
+        self.attentionWeightTitle = None
+        self.tagActivationWeight = None
 
     def loadFiles(self):
         for file in Files.InputFiles.keys():
@@ -40,7 +50,8 @@ class QuestionTagger:
 
     #Creates the CoOccurance matrix between words of post and tags
     def createCoOccurMat(self,):
-        co_occurence_matrix = {key: {} for key in self.tagsList}
+        co_occurence_matrix_body = {key: {} for key in self.tagsList}
+        co_occurence_matrix_title = {key: {} for key in self.tagsList}
         for post in self.helperObj.Posts:
             if (post.Tags is None):
                 continue
@@ -54,18 +65,27 @@ class QuestionTagger:
             for token in bodyTokens:
                 lem_token = self.wordnet_lemmatizer.lemmatize(token)
                 for question_tag in tagsForPost:
-                    present_value = (co_occurence_matrix.get(question_tag)).get(lem_token, 0)
+                    present_value = (co_occurence_matrix_body.get(question_tag)).get(lem_token, 0)
                     present_value = present_value + 1
-                    co_occurence_matrix[question_tag][lem_token] = present_value
-        co_occurence_df = pd.DataFrame(co_occurence_matrix)
-        co_occurence_df = co_occurence_df.fillna(0)
-        self.coOccMatrix = co_occurence_df;
+                    co_occurence_matrix_body[question_tag][lem_token] = present_value
+            titleTokens = nltk.word_tokenize(post.Title)
+            for token in titleTokens:
+                lem_token = self.wordnet_lemmatizer.lemmatize(token)
+                for question_tag in tagsForPost:
+                    present_value = (co_occurence_matrix_title.get(question_tag)).get(lem_token, 0)
+                    present_value = present_value + 1
+                    co_occurence_matrix_title[question_tag][lem_token] = present_value
+        co_occurence_body_df = pd.DataFrame(co_occurence_matrix_body)
+        co_occurence_body_df = co_occurence_body_df.fillna(0)
+        self.coOccMatrixBody = co_occurence_body_df;
+        co_occurence_title_df = pd.DataFrame(co_occurence_matrix_title)
+        co_occurence_title_df = co_occurence_title_df.fillna(0)
+        self.coOccMatrixTitle = co_occurence_title_df
 
         pass
 
     #Strength Association of the words
-    def getStrengthAssoc(self):
-        coOccDf = self.coOccMatrix;
+    def getStrengthAssoc(self,coOccDf):
         co_occurence_total = coOccDf.sum().sum()
         rowTotals = coOccDf.sum(axis=1)
         columnTotals = coOccDf.sum(axis=0)
@@ -81,7 +101,7 @@ class QuestionTagger:
                     sij[tag][word] = math.log10(tempvalue)
         sij_df = pd.DataFrame(sij)
         sij_df = sij_df.fillna(0)
-        self.strengthAssociation = sij_df
+        return sij_df
         pass
 
     #Base level of the Tag
@@ -99,9 +119,8 @@ class QuestionTagger:
         pass
 
     #Entropy of the word
-    def getEntropy(self):
+    def getEntropy(self,coOccDf):
         entropy = {}
-        coOccDf = self.coOccMatrix;
         rowTotals = coOccDf.sum(axis=1)
         columnTotals = coOccDf.sum(axis=0)
         for word in coOccDf.index:
@@ -115,21 +134,47 @@ class QuestionTagger:
             entropy[word] = totalEntropyForPost
         entropyMax = max(entropy.values())
         scaledEntropy = {key: 1 - value / entropyMax for key, value in entropy.items()}
-        self.scaledEntropy = scaledEntropy
+        return scaledEntropy
         pass
+    #Gets the attentional activation of tags based on the words in the post
+    def getAttenWeight(self,weight,scaledEntropy):
+        tScaleEntpy = sum(scaledEntropy.values())
+        attentionWeight = {key: (weight*value)/tScaleEntpy for key,value in scaledEntropy.items()}
+        return attentionWeight
+
+    #Gets the activation weights of the tags
+    def getActWeights(self):
+        ais = {}
+        for key in self.baseLevel:
+            sumTitleW,sumBodyW = 0,0
+            for attkey in self.attentionWeightTitle:
+                sumTitleW += self.attentionWeightTitle[attkey] * self.strengthAssoTitle.loc[attkey][key]
+            for attkey in self.attentionWeightBody:
+                sumBodyW += self.attentionWeightBody[attkey] * self.strengthAssoBody.loc[attkey][key]
+            ais[key] = self.baseLevel[key]+sumBodyW+sumTitleW
+        self.tagActivationWeight = ais
+
 
     #Method which processes all the model parameters
     def tagger(self):
         self.loadFiles()
         self.tagsList = [value.TagName for index, value in enumerate(self.helperObj.Tags)]
         self.createCoOccurMat()
-        #print("Co ouccurrence",self.coOccMatrix)
+        #print("Co ouccurrence done")
         self.getBaseLevel()
-        #print("Base level",self.baseLevel)
-        self.getEntropy()
-        #print("Scaled entropy",self.scaledEntropy)
-        self.getStrengthAssoc()
-        #print("Strength Association",self.strengthAssociation)
+        #print("Base level done")
+        self.scaledEntropyBody = self.getEntropy(self.coOccMatrixBody)
+        self.scaledEntropyTitle = self.getEntropy(self.coOccMatrixTitle)
+        #print("Scaled entropy done")
+        self.strengthAssoBody = self.getStrengthAssoc(self.coOccMatrixBody)
+        self.strengthAssoTitle = self.getStrengthAssoc(self.coOccMatrixTitle)
+        #print("Strength Association done")
+        self.attentionWeightBody = self.getAttenWeight(self.weightBody,self.scaledEntropyBody)
+        self.attentionWeightTitle = self.getAttenWeight(self.weightTitle,self.scaledEntropyTitle)
+        #print("Attention weight done")
+        self.getActWeights()
+        #print("Tag Activation",self.tagActivationWeight)
+
 
 
 if __name__ =='__main__':
