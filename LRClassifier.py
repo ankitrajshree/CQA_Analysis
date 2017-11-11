@@ -7,7 +7,7 @@ from sklearn.linear_model import LogisticRegression as lr
 
 from random import randint
 
-class Longitivty(object):
+class LRClassifier(object):
     def __init__(self,X,Y,fold):
         self.X = genfromtxt(X,delimiter=',')
         self.Y = genfromtxt(Y,delimiter=',')
@@ -43,8 +43,3 @@ class Longitivty(object):
         return self.train(X_train,y_train).score(x_test,y_test)
 
 
-if __name__ =='__main__':
-    for k in range(2,11):
-        l = Longitivty('data_std.csv','label_std.csv',fold =k)
-        print ("k value:"+str(k) +" accuracy: "+str(l.kfold_validator()))
-    l = Longitivty('data.csv','label.csv',fold =k)
