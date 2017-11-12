@@ -26,8 +26,8 @@ class CsvGenerator(object):
                                                   QA_Pair.F8_ReputedUserNumComments
                                                   ]]], axis=0)
                 Y_matrix = np.append(Y_matrix, [[int(QA_Pair.Y_Label_FrequentlyViewed)]])
-            np.savetxt('data_hr'+str(key)+'.csv', X_matrix, delimiter=',',fmt='%i')
-            np.savetxt('label_hr'+str(key)+'.csv', Y_matrix, delimiter=',',fmt='%i')
+            np.savetxt('CSV Files/data_hr'+str(key)+'.csv', X_matrix, delimiter=',',fmt='%i')
+            np.savetxt('CSV Files/label_hr'+str(key)+'.csv', Y_matrix, delimiter=',',fmt='%i')
 
     def generate_standardized_data(self):
         for key, qapairs in self.questionAnswerPairsDict.items():
@@ -47,8 +47,8 @@ class CsvGenerator(object):
                                              ]]], axis=0)
                 Y_matrix = np.append(Y_matrix,[[int(QA_Pair.Y_Label_FrequentlyViewed)]])
             X_matrix = preprocessing.scale(X_matrix)
-            np.savetxt('data_std_hr'+str(key)+'.csv',X_matrix,delimiter=',')
-            np.savetxt('label_std_hr'+str(key)+'.csv',Y_matrix,delimiter=',')
+            np.savetxt('CSV Files/data_std_hr'+str(key)+'.csv',X_matrix,delimiter=',')
+            np.savetxt('CSV Files/label_std_hr'+str(key)+'.csv',Y_matrix,delimiter=',')
 
         pass
 

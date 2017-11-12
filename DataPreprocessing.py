@@ -30,7 +30,7 @@ def main():
     questionAnswerPairs = helperObj.CreateQuestionAnswerPair()
 
     # Step 3. We have created Q/A pairs. Now we need to extract the features.
-    hourList = [1,2,3,4,5,6,7,8,9,10,11,12]
+    hourList = [1,6,12,24]
     hourFeaturePair = {}
     for hour in hourList:
         helperObj.CreateLabels()
