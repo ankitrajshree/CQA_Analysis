@@ -33,6 +33,21 @@ class QuestionTagger:
         self.attentionWeightTitle = None
         self.tagActivationWeight = None
 
+    def applyGivenTotals(self, rowOrColumn, rowOrColumnTotals, rowOrColumnName):
+        return rowOrColumn/rowOrColumnTotals[rowOrColumnName]
+    
+    def applyLog(self, value):
+        if (value==0):
+            return 0
+        else:
+            return math.log10(value)
+        
+    def piLogpi(self, value):
+        if(value ==0):
+            return 0
+        else:
+            return -value * math.log(value)
+
     def loadFiles(self):
         for file in Files.InputFiles.keys():
             try:
@@ -89,19 +104,11 @@ class QuestionTagger:
         co_occurence_total = coOccDf.sum().sum()
         rowTotals = coOccDf.sum(axis=1)
         columnTotals = coOccDf.sum(axis=0)
-        sij = {key: {} for key in self.tagsList}
-        for word in coOccDf.index:
-            for tag in self.tagsList:
-                rowTotal = rowTotals[word]
-                columnTotal = columnTotals[tag]
-                tempvalue = (coOccDf.loc[word][tag] * co_occurence_total) / float(rowTotal * columnTotal)
-                if (tempvalue == 0):
-                    sij[tag][word] = 0
-                else:
-                    sij[tag][word] = math.log10(tempvalue)
-        sij_df = pd.DataFrame(sij)
-        sij_df = sij_df.fillna(0)
-        return sij_df
+        colApplied = coOccDf.apply(lambda column:self.applyGivenTotals(column, columnTotals, column.name), axis=0)
+        rowApplied = colApplied.apply(lambda row:self.applyGivenTotals(row, rowTotals, row.name), axis=1)
+        rowApplied = rowApplied/co_occurence_total
+        strength_assoc = rowApplied.apply(np.vectorize(self.applyLog))
+        return strength_assoc
         pass
 
     #Base level of the Tag
@@ -122,20 +129,14 @@ class QuestionTagger:
     def getEntropy(self,coOccDf):
         entropy = {}
         rowTotals = coOccDf.sum(axis=1)
-        columnTotals = coOccDf.sum(axis=0)
-        for word in coOccDf.index:
-            totalEntropyForPost = 0
-            for tag in self.tagsList:
-                rowTotal = rowTotals[word]
-                nji = coOccDf.loc[word][tag]
-                if ((rowTotal > 0) and (nji > 0)):
-                    pIGivenJ = nji / float(rowTotal)
-                    totalEntropyForPost = totalEntropyForPost - pIGivenJ * math.log10(pIGivenJ)
-            entropy[word] = totalEntropyForPost
+        rowApplied = coOccDf.apply(lambda row:self.applyGivenTotals(row, rowTotals, row.name), axis=1)
+        unSummedPis = rowApplied.apply(np.vectorize(self.piLogpi))
+        entropy = unSummedPis.sum(axis=1).to_dict()
         entropyMax = max(entropy.values())
         scaledEntropy = {key: 1 - value / entropyMax for key, value in entropy.items()}
         return scaledEntropy
         pass
+    
     #Gets the attentional activation of tags based on the words in the post
     def getAttenWeight(self,weight,scaledEntropy):
         tScaleEntpy = sum(scaledEntropy.values())
@@ -158,27 +159,30 @@ class QuestionTagger:
     #Method which processes all the model parameters
     def tagger(self):
         self.loadFiles()
+        print("hey")
         self.tagsList = [value.TagName for index, value in enumerate(self.helperObj.Tags)]
+        print("files loaded")
         self.createCoOccurMat()
-        #print("Co ouccurrence done")
+        print("Co ouccurrence done")
         self.getBaseLevel()
-        #print("Base level done")
+        print("Base level done")
         self.scaledEntropyBody = self.getEntropy(self.coOccMatrixBody)
         self.scaledEntropyTitle = self.getEntropy(self.coOccMatrixTitle)
-        #print("Scaled entropy done")
+        print("Scaled entropy done")
         self.strengthAssoBody = self.getStrengthAssoc(self.coOccMatrixBody)
         self.strengthAssoTitle = self.getStrengthAssoc(self.coOccMatrixTitle)
-        #print("Strength Association done")
+        print("Strength Association done")
         self.attentionWeightBody = self.getAttenWeight(self.weightBody,self.scaledEntropyBody)
         self.attentionWeightTitle = self.getAttenWeight(self.weightTitle,self.scaledEntropyTitle)
-        #print("Attention weight done")
+        print("Attention weight done")
         self.getActWeights()
-        #print("Tag Activation",self.tagActivationWeight)
+        print("Tag Activation",self.tagActivationWeight)
 
 
-
+questagger=None
 if __name__ =='__main__':
     questagger = QuestionTagger()
+    print("hi")
     questagger.tagger()
 
 
