@@ -34,7 +34,7 @@ class QuestionTagger:
         self.tagActivationWeight = None
 
     def applyGivenTotals(self, rowOrColumn, rowOrColumnTotals, rowOrColumnName):
-        return rowOrColumn/rowOrColumnTotals[rowOrColumnName]
+        return rowOrColumn/float(rowOrColumnTotals[rowOrColumnName])
     
     def applyLog(self, value):
         if (value==0):
@@ -46,7 +46,7 @@ class QuestionTagger:
         if(value ==0):
             return 0
         else:
-            return -value * math.log(value)
+            return -value * math.log10(value)
 
     def loadFiles(self):
         for file in Files.InputFiles.keys():
@@ -104,10 +104,11 @@ class QuestionTagger:
         co_occurence_total = coOccDf.sum().sum()
         rowTotals = coOccDf.sum(axis=1)
         columnTotals = coOccDf.sum(axis=0)
+        coOccDf = coOccDf * 1.0
         colApplied = coOccDf.apply(lambda column:self.applyGivenTotals(column, columnTotals, column.name), axis=0)
         rowApplied = colApplied.apply(lambda row:self.applyGivenTotals(row, rowTotals, row.name), axis=1)
-        rowApplied = rowApplied/co_occurence_total
-        strength_assoc = rowApplied.apply(np.vectorize(self.applyLog))
+        rowApplied = rowApplied*float(co_occurence_total)
+        strength_assoc = rowApplied.applymap(np.vectorize(self.applyLog))
         return strength_assoc
         pass
 
@@ -130,7 +131,7 @@ class QuestionTagger:
         entropy = {}
         rowTotals = coOccDf.sum(axis=1)
         rowApplied = coOccDf.apply(lambda row:self.applyGivenTotals(row, rowTotals, row.name), axis=1)
-        unSummedPis = rowApplied.apply(np.vectorize(self.piLogpi))
+        unSummedPis = rowApplied.applymap(np.vectorize(self.piLogpi))
         entropy = unSummedPis.sum(axis=1).to_dict()
         entropyMax = max(entropy.values())
         scaledEntropy = {key: 1 - value / entropyMax for key, value in entropy.items()}
@@ -145,16 +146,17 @@ class QuestionTagger:
 
     #Gets the activation weights of the tags
     def getActWeights(self):
-        ais = {}
-        for key in self.baseLevel:
-            sumTitleW,sumBodyW = 0,0
-            for attkey in self.attentionWeightTitle:
-                sumTitleW += self.attentionWeightTitle[attkey] * self.strengthAssoTitle.loc[attkey][key]
-            for attkey in self.attentionWeightBody:
-                sumBodyW += self.attentionWeightBody[attkey] * self.strengthAssoBody.loc[attkey][key]
-            ais[key] = self.baseLevel[key]+sumBodyW+sumTitleW
-        self.tagActivationWeight = ais
-
+        wTitleValues = list(self.attentionWeightTitle.values())
+        wBodyValues = list(self.attentionWeightBody.values())
+        titleSums = (np.matrix(wTitleValues) * self.strengthAssoTitle.as_matrix()).tolist()[0]
+        bodySums = (np.matrix(wBodyValues) * self.strengthAssoBody.as_matrix()).tolist()[0]
+        titleTags = list(self.strengthAssoTitle.columns)
+        bodyTags = list(self.strengthAssoBody.columns)
+        titleSumsFinal = {titleTags[index]:value for index, value in enumerate(titleSums)}
+        bodySumsFinal = {bodyTags[index]:value for index, value in enumerate(bodySums)}
+        dicts = [titleSumsFinal, bodySumsFinal, self.baseLevel]
+        activations = {concernedTag: sum(d[concernedTag] for d in dicts) for concernedTag in titleTags}
+        self.tagActivationWeight = activations        
 
     #Method which processes all the model parameters
     def tagger(self):
