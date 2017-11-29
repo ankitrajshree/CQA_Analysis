@@ -12,6 +12,8 @@ from nltk.stem.snowball import EnglishStemmer
 import math
 #nltk.download('all')
 
+import Csvgenerator
+
 """
 Main Function
 """
@@ -111,10 +113,27 @@ def strip_tags(html):
     s.feed(html)
     return s.get_data()
 
+    helperObj.PairCommentWithPosts()
+
+
     #Step 2. Create Question Answer Pairs
     questionAnswerPairs = helperObj.CreateQuestionAnswerPair()
 
+    # Step 3. We have created Q/A pairs. Now we need to extract the features.
+    hourList = [1,6,12,24]
+    hourFeaturePair = {}
+    for hour in hourList:
+        helperObj.CreateLabels()
+        featureList = helperObj.ExtractAllFeatures(hour)
+        hourFeaturePair[hour] = featureList
 
+
+    # Step 4: Create csv files
+    csvGenerator = Csvgenerator.CsvGenerator(hourFeaturePair)
+    csvGenerator.generate_standardized_data()
+    csvGenerator.genrate_csv()
+
+    c = 20
 
 
 if __name__ == "__main__":
