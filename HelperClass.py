@@ -46,9 +46,12 @@ class HelperClass:
     def getHCAttribute(self, name):
         return getattr(self,name)
 
+    def setHCAttribute(self, name, value):
+        setattr(self, name, value)
+
     def ParseFile(self, filename, className):
 
-        f = open(filename,'r')
+        f = open(filename,'r', encoding='utf8')
         doc = f.read()
         f.close()
 
@@ -172,6 +175,7 @@ class HelperClass:
                 pass
         self.QuestionAnswerPairs = allPairs
         return self.QuestionAnswerPairs
+<<<<<<< HEAD
 
 
     def SortByPostCreationTime(self, allPosts):
@@ -416,5 +420,6 @@ class HelperClass:
                 quesAnsPair[key].Y_Label_FrequentlyViewed = 0
             else:
                 quesAnsPair[key].Y_Label_FrequentlyViewed = 1
-
         pass
+=======
+>>>>>>> master
