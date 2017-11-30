@@ -181,11 +181,4 @@ class QuestionTagger:
         print("Tag Activation",self.tagActivationWeight)
 
 
-questagger=None
-if __name__ =='__main__':
-    questagger = QuestionTagger()
-    print("hi")
-    questagger.tagger()
-
-
 

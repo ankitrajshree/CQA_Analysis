@@ -8,45 +8,44 @@ import Csvgenerator
 """
 Main Function
 """
-def main():
+class LongTermValue:
 
-    #Step 1. Parse all the input files
-    print(Files.InputFiles)
+    def __init__(self):
+        pass
 
-    helperObj = HC.HelperClass()
+    def predictLongTermValue(self):
 
-    for file in Files.InputFiles.keys():
-        try:
-            helperObj.ParseFile(Files.InputFiles[file], file )
+        #Step 1. Parse all the input files
+        print(Files.InputFiles)
 
-        except:
-            print("Error Parsing File")
+        helperObj = HC.HelperClass()
 
+        for file in Files.InputFiles.keys():
+            try:
+                helperObj.ParseFile(Files.InputFiles[file], file )
 
-    helperObj.PairCommentWithPosts()
-
-
-    #Step 2. Create Question Answer Pairs
-    questionAnswerPairs = helperObj.CreateQuestionAnswerPair()
-
-    # Step 3. We have created Q/A pairs. Now we need to extract the features.
-    hourList = [1,6,12,24]
-    hourFeaturePair = {}
-    for hour in hourList:
-        helperObj.CreateLabels()
-        featureList = helperObj.ExtractAllFeatures(hour)
-        hourFeaturePair[hour] = featureList
+            except:
+                print("Error Parsing File")
 
 
-    # Step 4: Create csv files
-    csvGenerator = Csvgenerator.CsvGenerator(hourFeaturePair)
-    csvGenerator.generate_standardized_data()
-    csvGenerator.genrate_csv()
-
-    c = 20
+        helperObj.PairCommentWithPosts()
 
 
-if __name__ == "__main__":
-    #Call main function
-    main()
-    print("End")
+        #Step 2. Create Question Answer Pairs
+        questionAnswerPairs = helperObj.CreateQuestionAnswerPair()
+
+        # Step 3. We have created Q/A pairs. Now we need to extract the features.
+        hourList = [1,6,12,24]
+        hourFeaturePair = {}
+        for hour in hourList:
+            helperObj.CreateLabels()
+            featureList = helperObj.ExtractAllFeatures(hour)
+            hourFeaturePair[hour] = featureList
+
+
+        # Step 4: Create csv files
+        csvGenerator = Csvgenerator.CsvGenerator(hourFeaturePair)
+        csvGenerator.generate_standardized_data()
+        csvGenerator.genrate_csv()
+
+        c = 20
