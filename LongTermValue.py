@@ -6,7 +6,7 @@ import HelperClass as HC
 import Csvgenerator
 
 """
-Main Function
+Class to predict Long Term Value of the post
 """
 class LongTermValue:
 
