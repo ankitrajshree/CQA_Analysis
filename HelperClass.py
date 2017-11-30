@@ -175,7 +175,6 @@ class HelperClass:
                 pass
         self.QuestionAnswerPairs = allPairs
         return self.QuestionAnswerPairs
-<<<<<<< HEAD
 
 
     def SortByPostCreationTime(self, allPosts):
@@ -421,5 +420,3 @@ class HelperClass:
             else:
                 quesAnsPair[key].Y_Label_FrequentlyViewed = 1
         pass
-=======
->>>>>>> master
