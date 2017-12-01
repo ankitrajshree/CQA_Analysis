@@ -1,5 +1,3 @@
-from sqlalchemy.sql.functions import coalesce
-
 import HelperClass as HC
 import MLStripper as mls
 import html.parser as ht
