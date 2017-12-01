@@ -66,10 +66,11 @@
    5. $python3 CQAAnalysis.py<br/>
 <br/>
 <br/>
-**4. Expected output:**
+
+**4. Expected output: **
    Following the above instructions the program will train the data and test and create the following accuracy graphs
-	1. 
-**5. Results:**
+
+**5. Results: **
      The results are in the form of graphs generated from the analysis which are added in the images folder.<br/>
 	1. Images\Logistic RegressionClassifier.png : Accuracy vs time for Long term value prediction using Logistic Regression<br/>
 	2. Images\Support vector machinesClassifier.png : Accuracy vs time for Long term value prediction using SVM.<br/>
