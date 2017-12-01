@@ -16,40 +16,40 @@
 	 g. statistics
 	 h. math
 
-2. File Descriptions:
+<b>2. File Descriptions:<b/>
 	APCsvgenerator.py : CSV generator for answer quality prediction <br />
 	APFeatures.py : Class to store features for answers quality prediction <br />
 	APHelperClass.py : Helper class for answer quality prediction <br />
-	APQuestionAnswer.py : For answer score prediction converts posts to questions and answers using post type id i.e question(id:1) or answer(id:2)
-	Badges.py : To store data from badges.xml file 
-	CQAAnalysis.py : Main script to run the program.(Entry point)
-	Comments.py : To store data from comments.xml file 
-	Csvgenerator.py : To generate CSV data to predict long term value of questions
-	Features.py : To store features for long term value 
-	Files.py : To map the xml files. 
-	GraphPlotting.py : To plot the accuracy graphs for long term value prediction
-	HelperClass.py : It contains helper functions for long term value prediction 
-	LRClassifier.py : Logistic Regression for QA score prediction and long term value prediction.
-	LongTermValue.py : Entry point for long term value prediction called by CQAAnalysis.py
-	MLPClassifier.py : Multi Layer Perceptron for QA score prediction.
-	MLStripper.py : Strips html tags and code fragments.
-	NBClassifier.py :  Naive Bayes Classifier for QA score prediction and long term value prediction.
-	PostHistory.py : To store data from posthistory.xml file 
-	PostLinks.py : To store data from postlinks.xml file 
-	Posts.py : To store data from posts.xml file 
-	PredictQuestionAnswerQuality.py : Entry point for Question Answer score prediction called by CQAAnalysis.py
-	QPCsvgenerator.py : CSV generator for question quality prediction
-	QPFeatures.py : To store features for question quality prediction
-	QPHelperClass.py : Helper class for question quality prediction
-	QPQuestionAnswer.py : For Question score prediction converts posts to questions and answers using post type id i.e question(id:1) or answer(id:2)
-	QuestionAnswer.py : For Long term value prediction, converts posts to questions and answers using post type id i.e question(id:1) or answer(id:2)
-	QuestionTagger.py : Tag prediction model 
- 	SVMClassifier.py : Support Vector Machines Classifier for QA score prediction and long term value prediction.
-	ScoreClassifier.py : Used for question answer score prediction using multiple models.
-	Tags.py : To store data from tags.xml file
-	Users.py : To store data from users.xml file
-	ViewCountClassifier.py : Used for long term value prediction using multiple models.
-	Votes.py : To store data from votes.xml file
+	APQuestionAnswer.py : For answer score prediction converts posts to questions and answers using post type id i.e question(id:1) or answer(id:2)<br />
+	Badges.py : To store data from badges.xml file <br />
+	CQAAnalysis.py : Main script to run the program.(Entry point)<br />
+	Comments.py : To store data from comments.xml file <br />
+	Csvgenerator.py : To generate CSV data to predict long term value of questions<br />
+	Features.py : To store features for long term value <br />
+	Files.py : To map the xml files. <br />
+	GraphPlotting.py : To plot the accuracy graphs for long term value prediction<br />
+	HelperClass.py : It contains helper functions for long term value prediction <br />
+	LRClassifier.py : Logistic Regression for QA score prediction and long term value prediction.<br />
+	LongTermValue.py : Entry point for long term value prediction called by CQAAnalysis.py<br />
+	MLPClassifier.py : Multi Layer Perceptron for QA score prediction.<br />
+	MLStripper.py : Strips html tags and code fragments.<br />
+	NBClassifier.py :  Naive Bayes Classifier for QA score prediction and long term value prediction.<br />
+	PostHistory.py : To store data from posthistory.xml file <br />
+	PostLinks.py : To store data from postlinks.xml file <br />
+	Posts.py : To store data from posts.xml file <br />
+	PredictQuestionAnswerQuality.py : Entry point for Question Answer score prediction called by CQAAnalysis.py<br />
+	QPCsvgenerator.py : CSV generator for question quality prediction<br />
+	QPFeatures.py : To store features for question quality prediction<br />
+	QPHelperClass.py : Helper class for question quality prediction<br />
+	QPQuestionAnswer.py : For Question score prediction converts posts to questions and answers using post type id i.e question(id:1) or answer(id:2)<br />
+	QuestionAnswer.py : For Long term value prediction, converts posts to questions and answers using post type id i.e question(id:1) or answer(id:2)<br />
+	QuestionTagger.py : Tag prediction model <br />
+ 	SVMClassifier.py : Support Vector Machines Classifier for QA score prediction and long term value prediction.<br />
+	ScoreClassifier.py : Used for question answer score prediction using multiple models.<br />
+	Tags.py : To store data from tags.xml file<br />
+	Users.py : To store data from users.xml file<br />
+	ViewCountClassifier.py : Used for long term value prediction using multiple models.<br />
+	Votes.py : To store data from votes.xml file<br />
 
 3. Using the program :
    1. Unzip CQA_Analysis.zip.
