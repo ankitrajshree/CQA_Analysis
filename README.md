@@ -16,7 +16,7 @@
 	 g. statistics
 	 h. math
 
-<b>2. File Descriptions:<b/>
+2. File Descriptions:<br/>
 	APCsvgenerator.py : CSV generator for answer quality prediction <br />
 	APFeatures.py : Class to store features for answers quality prediction <br />
 	APHelperClass.py : Helper class for answer quality prediction <br />
@@ -50,37 +50,38 @@
 	Users.py : To store data from users.xml file<br />
 	ViewCountClassifier.py : Used for long term value prediction using multiple models.<br />
 	Votes.py : To store data from votes.xml file<br />
-
+	<br/>
+	<br/>
 3. Using the program :
-   1. Unzip CQA_Analysis.zip.
-   2. Change directory to CQA_Analysis
-   4. Make sure these folders exist.
-	 a. Data/ai.stackexchange.com
-	 b. CSV Files
-	 c. CSV Files_A
-	 d. CSV Files_Q
-	 e. Images_LTV
-	 f. Images_A
-	 g. Images_Q
-   5. $python3 CQAAnalysis.py
+   1. Unzip CQA_Analysis.zip.<br/>
+   2. Change directory to CQA_Analysis<br/>
+   4. Make sure these folders exist.<br/>
+	 a. Data/ai.stackexchange.com<br/>
+	 b. CSV Files<br/>
+	 c. CSV Files_A<br/>
+	 d. CSV Files_Q<br/>
+	 e. Images_LTV<br/>
+	 f. Images_A<br/>
+	 g. Images_Q<br/>
+   5. $python3 CQAAnalysis.py<br/>
 
 4. Expected output:
    Following the above instructions the program will train the data and test and create the following accuracy graphs
 	1. 
-4. Results:
-     The results are in the form of graphs generated from the analysis which are added in the images folder.
-	1. Images\Logistic RegressionClassifier.png : Accuracy vs time for Long term value prediction using Logistic Regression
-	2. Images\Support vector machinesClassifier.png : Accuracy vs time for Long term value prediction using SVM.
-	3. Images\Navie BayesClassifier.png : Accuracy vs time for Long term value prediction using Naive Bayes
-	4. Images_Q\Accuracy.PNG: Performance of differnt models for Question score prediction
-	5. Images_Q\MLP_Classifier.png :Accuracy vs k value of k-fold for Question score prediction using MLP
-	6. Images_Q\Gaussian_Naive_Bayes.png : Accuracy vs k value of k-fold for Question score prediction using GNB
-	7. Images_Q\Support_Vector_Machine.png : Accuracy vs k value of k-fold for Question score prediction using SVM
-	8. Images_Q\Logistic_Regression.png : Accuracy vs k value of k-fold for Question score prediction using LR
-	9. Images_Q\coefficient.PNG : Coefficents for each features in LR for Question score prediction
-	10. Images_A\Accuracy.PNG: Performance of differnt models for Answer score prediction
-	11. Images_A\MLP_Classifier.png :Accuracy vs k value of k-fold for Answer score prediction using MLP
-	12. Images_A\Gaussian_Naive_Bayes.png : Accuracy vs k value of k-fold for Answer score prediction using GNB
-	13. Images_A\Support_Vector_Machine.png : Accuracy vs k value of k-fold for Answer score prediction using SVM
-	14. Images_A\Logistic_Regression.png : Accuracy vs k value of k-fold for Answer score prediction using LR
-	15. Images_A\coefficient.PNG : Coefficents for each features in LR for Answer score prediction
+5. Results:<br/>
+     The results are in the form of graphs generated from the analysis which are added in the images folder.<br/>
+	1. Images\Logistic RegressionClassifier.png : Accuracy vs time for Long term value prediction using Logistic Regression<br/>
+	2. Images\Support vector machinesClassifier.png : Accuracy vs time for Long term value prediction using SVM.<br/>
+	3. Images\Navie BayesClassifier.png : Accuracy vs time for Long term value prediction using Naive Bayes<br/>
+	4. Images_Q\Accuracy.PNG: Performance of differnt models for Question score prediction<br/>
+	5. Images_Q\MLP_Classifier.png :Accuracy vs k value of k-fold for Question score prediction using MLP<br/>
+	6. Images_Q\Gaussian_Naive_Bayes.png : Accuracy vs k value of k-fold for Question score prediction using GNB<br/>
+	7. Images_Q\Support_Vector_Machine.png : Accuracy vs k value of k-fold for Question score prediction using SVM<br/>
+	8. Images_Q\Logistic_Regression.png : Accuracy vs k value of k-fold for Question score prediction using LR<br/>
+	9. Images_Q\coefficient.PNG : Coefficents for each features in LR for Question score prediction<br/>
+	10. Images_A\Accuracy.PNG: Performance of differnt models for Answer score prediction<br/>
+	11. Images_A\MLP_Classifier.png :Accuracy vs k value of k-fold for Answer score prediction using MLP<br/>
+	12. Images_A\Gaussian_Naive_Bayes.png : Accuracy vs k value of k-fold for Answer score prediction using GNB<br/>
+	13. Images_A\Support_Vector_Machine.png : Accuracy vs k value of k-fold for Answer score prediction using SVM<br/>
+	14. Images_A\Logistic_Regression.png : Accuracy vs k value of k-fold for Answer score prediction using LR<br/>
+	15. Images_A\coefficient.PNG : Coefficents for each features in LR for Answer score prediction<br/>
