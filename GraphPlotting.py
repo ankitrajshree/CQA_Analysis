@@ -4,7 +4,7 @@ class GraphPlot:
     def __init__(self):
         pass
 
-    def PlotGraph(self, hoursAccuracyTuplesList, xlabel, ylabel, classifier ):
+    def PlotGraph(self, hoursAccuracyTuplesList, xlabel, ylabel, classifier, postType):
         import matplotlib.pyplot as plt
         import numpy as np
 
@@ -43,6 +43,6 @@ class GraphPlot:
         plt.title(classifier + "K = " + str(kValueForMaxAvg) +": "+ xlabel + "_vs_" + ylabel)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
-        plt.savefig("images/"+classifier + "Classifier.png")
+        plt.savefig("Images_" + postType +"/"+classifier + "Classifier.png")
         plt._show()
         pass

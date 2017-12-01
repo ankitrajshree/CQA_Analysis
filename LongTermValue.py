@@ -5,6 +5,8 @@ import HelperClass as HC
 
 import Csvgenerator
 
+import ViewCountClassifier as VCC
+
 """
 Class to predict Long Term Value of the post
 """
@@ -49,3 +51,6 @@ class LongTermValue:
         csvGenerator.genrate_csv()
 
         c = 20
+
+        #Predict the long term value
+        VCC.vcClassifier('LTV',8)

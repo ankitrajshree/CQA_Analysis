@@ -17,6 +17,7 @@ class Posts:
         self.Tags = None
         self.AnswerCount = None
         self.CommentCount = None
+        self.FavoriteCount = None
 
         #Additional Attributes. To be added
         self.CommentsList = None

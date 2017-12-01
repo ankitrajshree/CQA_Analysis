@@ -1,5 +1,3 @@
-import Files
-import HelperClass as HC
 from numpy import  genfromtxt
 import numpy as np
 from sklearn.model_selection import train_test_split,KFold
@@ -7,18 +5,19 @@ from sklearn.svm import LinearSVC
 
 
 class SVMClassifier(object):
-    def __init__(self,X,Y,fold):
+    def __init__(self,X,Y,fold, shape):
         self.X = genfromtxt(X,delimiter=',')
         self.Y = genfromtxt(Y,delimiter=',')
         self.fold = fold
+        self.shape = shape
 
     def kfold_validator(self):
         kf = KFold(n_splits=self.fold,shuffle=True)
         accuracy = 0.0
         for train_indeces,test_indeces in kf.split(X=self.X):
-            X1_train = np.empty(shape =(0,8))
-            y1_train = np.empty(shape= (0))
-            X1_test = np.empty(shape=(0, 8))
+            X1_train = np.empty(shape =(0,self.shape))
+            y1_train = np.empty(shape= (0, ))
+            X1_test = np.empty(shape=(0,self.shape))
             y1_test = np.empty(shape=(0, ))
             for index in train_indeces:
                 X1_train = np.append(X1_train,[self.X[index]],axis=0)
