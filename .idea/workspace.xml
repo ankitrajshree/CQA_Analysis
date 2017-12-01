@@ -2,70 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6c3fceff-4527-4c67-93ed-4c72dd1513f7" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_hr10.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_hr11.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_hr2.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_hr3.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_hr4.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_hr5.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_hr7.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_hr8.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_hr9.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr10.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr11.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr2.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr3.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr4.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr5.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr7.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr8.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr9.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_hr10.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_hr11.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_hr2.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_hr3.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_hr4.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_hr5.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_hr7.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_hr8.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_hr9.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr10.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr11.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr2.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr3.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr4.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr5.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr7.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr8.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr9.csv" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/Logistic RegressionClassifier.png" afterPath="$PROJECT_DIR$/images/Logistic RegressionClassifier.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/Navie BayesClassifier.png" afterPath="$PROJECT_DIR$/images/Navie BayesClassifier.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/Support vector machinesClassifier.png" afterPath="$PROJECT_DIR$/images/Support vector machinesClassifier.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Images_A/Gaussian_Naive_Bayes.png" afterPath="$PROJECT_DIR$/Images_A/Gaussian_Naive_Bayes.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Images_A/Logistic_Regression.png" afterPath="$PROJECT_DIR$/Images_A/Logistic_Regression.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Images_A/MLP_Classifier.png" afterPath="$PROJECT_DIR$/Images_A/MLP_Classifier.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Images_A/Support_Vector_Machine.png" afterPath="$PROJECT_DIR$/Images_A/Support_Vector_Machine.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Images_LTV/Logistic RegressionClassifier.png" afterPath="$PROJECT_DIR$/Images_LTV/Logistic RegressionClassifier.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Images_LTV/Navie BayesClassifier.png" afterPath="$PROJECT_DIR$/Images_LTV/Navie BayesClassifier.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Images_LTV/Support vector machinesClassifier.png" afterPath="$PROJECT_DIR$/Images_LTV/Support vector machinesClassifier.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Images_Q/Gaussian_Naive_Bayes.png" afterPath="$PROJECT_DIR$/Images_Q/Gaussian_Naive_Bayes.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Images_Q/Logistic_Regression.png" afterPath="$PROJECT_DIR$/Images_Q/Logistic_Regression.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Images_Q/MLP_Classifier.png" afterPath="$PROJECT_DIR$/Images_Q/MLP_Classifier.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Images_Q/Support_Vector_Machine.png" afterPath="$PROJECT_DIR$/Images_Q/Support_Vector_Machine.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CQAAnalysis.py" afterPath="$PROJECT_DIR$/CQAAnalysis.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/data_hr1.csv" afterPath="$PROJECT_DIR$/CSV Files/data_hr1.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/data_hr12.csv" afterPath="$PROJECT_DIR$/CSV Files/data_hr12.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/data_hr24.csv" afterPath="$PROJECT_DIR$/CSV Files/data_hr24.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/data_hr6.csv" afterPath="$PROJECT_DIR$/CSV Files/data_hr6.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr1.csv" afterPath="$PROJECT_DIR$/CSV Files/data_std_hr1.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr12.csv" afterPath="$PROJECT_DIR$/CSV Files/data_std_hr12.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr24.csv" afterPath="$PROJECT_DIR$/CSV Files/data_std_hr24.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/data_std_hr6.csv" afterPath="$PROJECT_DIR$/CSV Files/data_std_hr6.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/label_hr1.csv" afterPath="$PROJECT_DIR$/CSV Files/label_hr1.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/label_hr12.csv" afterPath="$PROJECT_DIR$/CSV Files/label_hr12.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/label_hr24.csv" afterPath="$PROJECT_DIR$/CSV Files/label_hr24.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/label_hr6.csv" afterPath="$PROJECT_DIR$/CSV Files/label_hr6.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr1.csv" afterPath="$PROJECT_DIR$/CSV Files/label_std_hr1.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr12.csv" afterPath="$PROJECT_DIR$/CSV Files/label_std_hr12.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr24.csv" afterPath="$PROJECT_DIR$/CSV Files/label_std_hr24.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CSV Files/label_std_hr6.csv" afterPath="$PROJECT_DIR$/CSV Files/label_std_hr6.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GraphPlotting.py" afterPath="$PROJECT_DIR$/GraphPlotting.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LRClassifier.py" afterPath="$PROJECT_DIR$/LRClassifier.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LongTermValue.py" afterPath="$PROJECT_DIR$/LongTermValue.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/NBClassifier.py" afterPath="$PROJECT_DIR$/NBClassifier.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Posts.py" afterPath="$PROJECT_DIR$/Posts.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SVMClassifier.py" afterPath="$PROJECT_DIR$/SVMClassifier.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ViewCountClassifier.py" afterPath="$PROJECT_DIR$/ViewCountClassifier.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -110,8 +58,8 @@
       <file leaf-file-name="ScoreClassifier.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ScoreClassifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="67" column="15" lean-forward="true" selection-start-line="67" selection-start-column="15" selection-end-line="67" selection-end-column="15" />
+            <state relative-caret-position="205">
+              <caret line="58" column="25" lean-forward="false" selection-start-line="58" selection-start-column="25" selection-end-line="58" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -722,8 +670,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ScoreClassifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="67" column="15" lean-forward="true" selection-start-line="67" selection-start-column="15" selection-end-line="67" selection-end-column="15" />
+        <state relative-caret-position="205">
+          <caret line="58" column="25" lean-forward="false" selection-start-line="58" selection-start-column="25" selection-end-line="58" selection-end-column="25" />
           <folding />
         </state>
       </provider>
