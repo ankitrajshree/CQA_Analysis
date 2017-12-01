@@ -1,9 +1,9 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------
-							Learning from CQA Data
-							Team No : 15				
+							**Learning from CQA Data**
+							**Team No : 15**				
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
-1. Enviornment :
+**1. Enviornment :**
     Python version : 3.6.1
     Anaconda version : 4.4.0 
     Modules required to run the program:	
@@ -16,7 +16,7 @@
 	 g. statistics
 	 h. math
 
-2. File Descriptions:<br/>
+**2. File Descriptions:**
 	APCsvgenerator.py : CSV generator for answer quality prediction <br />
 	APFeatures.py : Class to store features for answers quality prediction <br />
 	APHelperClass.py : Helper class for answer quality prediction <br />
@@ -52,7 +52,7 @@
 	Votes.py : To store data from votes.xml file<br />
 	<br/>
 	<br/>
-3. Using the program :
+**3. Using the program :**
    1. Unzip CQA_Analysis.zip.<br/>
    2. Change directory to CQA_Analysis<br/>
    4. Make sure these folders exist.<br/>
@@ -64,11 +64,12 @@
 	 f. Images_A<br/>
 	 g. Images_Q<br/>
    5. $python3 CQAAnalysis.py<br/>
-
-4. Expected output:
+<br/>
+<br/>
+**4. Expected output:**
    Following the above instructions the program will train the data and test and create the following accuracy graphs
 	1. 
-5. Results:<br/>
+**5. Results:**
      The results are in the form of graphs generated from the analysis which are added in the images folder.<br/>
 	1. Images\Logistic RegressionClassifier.png : Accuracy vs time for Long term value prediction using Logistic Regression<br/>
 	2. Images\Support vector machinesClassifier.png : Accuracy vs time for Long term value prediction using SVM.<br/>
