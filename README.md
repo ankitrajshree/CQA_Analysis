@@ -17,9 +17,9 @@
 	 h. math
 
 2. File Descriptions:
-	APCsvgenerator.py : CSV generator for answer quality prediction __
-	APFeatures.py : Class to store features for answers quality prediction __
-	APHelperClass.py : Helper class for answer quality prediction __
+	APCsvgenerator.py : CSV generator for answer quality prediction <br />
+	APFeatures.py : Class to store features for answers quality prediction <br />
+	APHelperClass.py : Helper class for answer quality prediction <br />
 	APQuestionAnswer.py : For answer score prediction converts posts to questions and answers using post type id i.e question(id:1) or answer(id:2)
 	Badges.py : To store data from badges.xml file 
 	CQAAnalysis.py : Main script to run the program.(Entry point)
